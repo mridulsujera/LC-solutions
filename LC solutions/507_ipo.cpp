@@ -1,24 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 class Solution {
 public:
-    int findMaximizedCapital(int k, int w, vector<int>& profit, vector<int>& capital) {
-        vector<pair<int,int>> tosort;
-        for (int i=0;i<size(profit);i++){
-            tosort.push_back({capital[i],profit[i]});
+    int findMaximizedCapital(int k, int w, vector<int>& profits,
+                             vector<int>& capital) {
+        int n=size(profits);
+        vector<pair<int,int>> res;
+        for (int i=0;i<n;i++){
+            res.push_back({capital[i],profits[i]});
         }
 
-        sort(tosort.begin(),tosort.end(),[](auto a,auto b) {
-            if (a.first!=b.first){
-                return a.first<b.first;
-            }else{
-                return a.second>b.second;
+        sort(begin(res),end(res));
+        priority_queue<int> pq;
+        int j=0;
+        for (int i=0;i<k;i++){
+            while (j<n and w>=res[j].first)
+            {
+                pq.push(res[j].second);
+                j++;
             }
-        });
+
+            if (!pq.empty()){
+                w+=pq.top();
+                pq.pop();
+            }else{
+                break;
+            }
+        }
+
+        return w;
+
     }
 };
-
-int main() {
-    
-    return 0;
-}
